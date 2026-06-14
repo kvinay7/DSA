@@ -1,24 +1,60 @@
-# 1. Sum And Average
+# Problem 1 — Sum And Average
 
 ## Problem Statement
 
-Given an integer array `nums`, return the sum and average of all elements.
+Given a list of integers, calculate:
+
+1. Sum of all numbers
+2. Average of all numbers
+
+Return both values.
+
+If the input list is null or empty, throw an exception.
+
+---
 
 ## Example 1
 
-```text
-Input:
-nums = [10,20,30,40,50]
+Input
 
-Output:
-sum = 150
-average = 30
-```
+[10, 20, 30, 40, 50]
+
+Output
+
+Sum = 150
+Average = 30.0
+
+---
+
+## Example 2
+
+Input
+
+[5, 15]
+
+Output
+
+Sum = 20
+Average = 10.0
+
+---
+
+## Example 3
+
+Input
+
+[]
+
+Output
+
+Exception:
+Input list cannot be empty
+
+---
 
 ## Constraints
 
-```text
-1 <= nums.length <= 10^5
--10^6 <= nums[i] <= 10^6
-```
+1 <= n <= 100000
+
+-1000000 <= nums[i] <= 1000000
 

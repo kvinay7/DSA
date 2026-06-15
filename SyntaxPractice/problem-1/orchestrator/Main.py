@@ -7,7 +7,7 @@ from logging.Logger import Logger
 from service.Service import Service
 
 Logger.info(
-    "Application Started"
+    "Execution Started"
 )
 
 n = int(
@@ -20,10 +20,15 @@ print(
 
 numbers = []
 
-for _ in range(n):
-    numbers.append(
-        int(input())
-    )
+while len(numbers) < n:
+    line = input().strip()
+    if not line:
+        continue
+    parts = line.split()
+    for part in parts:
+        if len(numbers) >= n:
+            break
+        numbers.append(int(part))
 
 service = Service()
 
@@ -35,5 +40,5 @@ print()
 print(result)
 
 Logger.info(
-    "Application Completed"
+    "Execution Completed"
 )

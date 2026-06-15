@@ -12,8 +12,10 @@ public class Test {
 
         Service service = new Service();
 
+        System.out.println("=== Running Tests ===");
+
         runTest(
-                "Normal Input",
+                "Test Case 1 - Normal Input",
                 () -> {
                     Result result =
                             service.process(
@@ -28,7 +30,7 @@ public class Test {
         );
 
         runTest(
-                "Single Element",
+                "Test Case 2 - Single Element",
                 () -> {
                     Result result =
                             service.process(
@@ -41,7 +43,7 @@ public class Test {
         );
 
         runTest(
-                "Negative Numbers",
+                "Test Case 3 - Negative Numbers",
                 () -> {
                     Result result =
                             service.process(
@@ -56,7 +58,7 @@ public class Test {
         );
 
         runTest(
-                "Empty Input",
+                "Test Case 4 - Empty Input",
                 () -> {
 
                     try {

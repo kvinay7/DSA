@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from service.Service import Service
 
 passed = 0
@@ -5,6 +10,7 @@ failed = 0
 
 service = Service()
 
+print("=== Running Tests ===")
 
 def run_test(name, test_func):
 
@@ -27,7 +33,7 @@ def run_test(name, test_func):
 
 
 run_test(
-    "Normal Input",
+    "Test Case 1 - Normal Input",
     lambda:
     service.process(
         [10,20,30,40,50]
@@ -35,7 +41,7 @@ run_test(
 )
 
 run_test(
-    "Single Element",
+    "Test Case 2 - Single Element",
     lambda:
     service.process(
         [10]
@@ -43,7 +49,7 @@ run_test(
 )
 
 run_test(
-    "Negative Numbers",
+    "Test Case 3 - Negative Numbers",
     lambda:
     service.process(
         [-10,-20,-30]
@@ -61,7 +67,7 @@ def empty_input_test():
 
 
 run_test(
-    "Empty Input",
+    "Test Case 4 - Empty Input",
     empty_input_test
 )
 

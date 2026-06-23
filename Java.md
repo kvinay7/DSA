@@ -1,5 +1,7 @@
 <h1 align="center">Java Cheat Sheet</h1>
 
+## SECTION 0: [JAVA NOTES](https://github.com/kvinay7/interview-preparation/blob/main/Java.md)
+
 ## SECTION 1: NUMERICAL & CHARACTER METHODS
 
 ### Character Class

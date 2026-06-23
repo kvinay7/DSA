@@ -1,5 +1,7 @@
 <h1 align="center">Python Cheat Sheet</h1>
 
+## SECTION 0: [PYTHON NOTES](https://github.com/kvinay7/Programming-in-Python)
+
 ## SECTION 1: NUMERICAL & CHARACTER METHODS
 
 ### Character/String Checks

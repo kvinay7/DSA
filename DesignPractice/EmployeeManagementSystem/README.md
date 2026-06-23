@@ -114,7 +114,7 @@ Use:
 * Java 17+
 * Spring Boot
 * Spring Data JPA
-* MySQL
+* H2 for the starter setup
 * Lombok
 * Validation API
 
@@ -165,6 +165,14 @@ PUT /employees/{id}
 
 DELETE /employees/{id}
 
+Current starter setup:
+
+* `EmployeeController` matches these endpoints
+* `EmployeeService` supports create, get by id, get all, update, and delete
+* `H2` is used now so the backend can run without an external database
+* Bean validation is enabled on the `Employee` model
+* Custom exceptions and a global handler are added for API errors
+
 ---
 
 ### Frontend
@@ -200,25 +208,37 @@ Features:
 
 ---
 
+## Development Checklist
+
+1. Install the required software
+2. Create the Spring Boot starter project
+3. Add the required `pom.xml` dependencies
+4. Verify the main application class
+5. Run the application locally
+6. Define the JPA entities
+7. Build repository, exception, service, and controller layers
+
+---
+
 ## Setup Notes
 
-* Java 17+
-* Maven
-* Spring Boot project
-* Spring Web, Validation, Data JPA
-* H2 for in-memory database
-* Lombok support in IDE
-* Postman for API testing
-* Start with backend REST APIs first
+* Java 17 or later
+* Maven for build and run commands
+* Spring Boot as the backend framework
+* Spring Web, Validation, and Data JPA starters
+* H2 for the in-memory database during development
+* Lombok support enabled in the IDE
+* Postman for testing REST APIs
+* Backend REST APIs first, UI later
 
 ---
 
 ## Application Run Steps
 
-* Open terminal in `DSA/DesignPractice/EmployeeManagementSystem`
-* Run `mvn spring-boot:run` or `mvn -f DSA\DesignPractice\EmployeeManagementSystem\pom.xml spring-boot:run`
-* Open `http://localhost:8080`
-* Open H2 console at `http://localhost:8080/h2-console`
+* Open a terminal in `DSA/DesignPractice/EmployeeManagementSystem`
+* Run `mvn spring-boot:run`
+* Visit `http://localhost:8080`
+* Open the H2 console at `http://localhost:8080/h2-console`
 * Use `jdbc:h2:mem:emsdb` as the JDBC URL
-* Test APIs with Postman after adding controllers
+* Test the REST endpoints with Postman after the controller is added
 

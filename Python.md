@@ -175,6 +175,37 @@ any(arr)                         # Any truthy?
 new_arr = arr.copy()
 new_arr = arr[:]
 new_arr = list(arr)
+
+# enumerate()
+arr = [10, 20, 30]
+for i, x in enumerate(arr):
+    print(i, x)
+
+# zip()
+a = [1, 2]
+b = [3, 4]
+for x, y in zip(a, b):
+    print(x, y)
+
+# sorted() - returns new list
+sorted(arr)
+sorted(arr, reverse=True)
+
+# reversed()
+for x in reversed(arr):
+    print(x)
+
+# List comprehension
+arr = [x*x for x in range(5)]
+
+# Nested comprehension
+matrix = [[0 for _ in range(m)] for _ in range(n)]
+
+# Copy vs Alias
+a = [1,2,3]
+b = a          # Alias
+c = a.copy()   # Copy
+d = a[:]       # Copy
 ```
 
 ---
@@ -287,7 +318,9 @@ len(d)
 from collections import Counter
 freq = Counter(arr)              # Count occurrences
 freq[x]                          # Get frequency
+freq.most_common()
 freq.most_common(k)              # Top k elements
+list(freq.elements())
 ```
 
 ### DefaultDict (Auto-initialize)
@@ -330,6 +363,10 @@ d.popleft()                      # Remove from left
 d[0]                             # Peek left
 d[-1]                            # Peek right
 d.rotate(k)                      # Rotate right by k
+d.extend(iterable)
+d.extendleft(iterable)
+d.rotate(k)
+d.rotate(-k)
 ```
 
 ### Heap (Priority Queue)
@@ -351,6 +388,9 @@ heapq.heappush(heap, (priority, value))
 # k largest/smallest
 heapq.nlargest(k, list)
 heapq.nsmallest(k, list)
+
+heapq.heapreplace(heap, x)
+heapq.heappushpop(heap, x)
 ```
 
 ### OrderedDict (Maintains insertion order)

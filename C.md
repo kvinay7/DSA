@@ -93,6 +93,15 @@ int main(int argc, char *argv[]) {
 (char *) ptr       // Cast pointer type
 ```
 
+### Storage Classes
+
+| Storage Class | Scope                             | Lifetime       | Key Points                                                                                                                     |
+| ------------- | --------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **auto**      | Block (local)                     | Block duration | Default storage class for local variables. Created on function entry and destroyed on exit.                                    |
+| **extern**    | Global (across multiple files)    | Entire program | Declares a global variable defined elsewhere. Used for sharing variables across files.                                         |
+| **static**    | Local: Block<br>Global: File only | Entire program | **Local static:** Retains value between function calls.<br>**Global static:** Visible only within the current source file.     |
+| **register**  | Block (local)                     | Block duration | Suggests storing variable in a CPU register for faster access. Compiler may ignore the request. Address (`&`) cannot be taken. |
+
 ---
 
 ## SECTION 2: OPERATORS
@@ -647,7 +656,9 @@ union Data {
 
 ---
 
-## SECTION 10: STACKS
+<h1 align="center">Data Structures</h1>
+
+## SECTION 11: STACKS
 
 ### Stack Operations (LIFO - Last In First Out)
 
@@ -669,19 +680,60 @@ size()         Return number of elements
 
 **Applications**
 - Function call stack (recursion)
-- Expression evaluation (infix → postfix)
+- Expression evaluation (infix ↔ postfix ↔ prefix)
 - Balanced parentheses checking
 - Undo/Redo functionality
 - Backtracking problems
 - DFS traversal
 
+### Expression Conversion & Evaluation
+
+**Infix to Postfix Conversion**
+```
+Infix:     A + B * C
+Postfix:   A B C * +
+
+Use stack + operator precedence
+Higher precedence operators first
+```
+
+**Infix to Prefix Conversion**
+```
+Infix:     A + B * C
+Prefix:    + A * B C
+
+Scan right to left
+Push operators to stack
+```
+
+**Postfix Evaluation**
+```
+Expression: 5 3 + 2 *
+1. Read 5   → push
+2. Read 3   → push
+3. Read +   → pop 3,5 → push 8
+4. Read 2   → push
+5. Read *   → pop 2,8 → push 16
+Result: 16
+```
+
+**Prefix Evaluation**
+```
+Scan right to left
+Operand → push
+Operator → pop 2, apply, push
+```
+
 **Stack Permutations**
-- Valid output permutations from stack = Catalan number = C(n) = (2n)! / ((n+1)! × n!)
-- For n=3: C(3) = 5 valid permutations
+```
+Valid output permutations from stack = Catalan number
+C(n) = (2n)! / ((n+1)! × n!)
+For n=3: C(3) = 5 valid permutations
+```
 
 ---
 
-## SECTION 11: QUEUES
+## SECTION 12: QUEUES
 
 ### Queue Operations (FIFO - First In First Out)
 
@@ -704,22 +756,36 @@ isFull()       Check if full
 ### Types of Queues
 
 **Circular Queue**
-- Rear wraps around to use space freed by dequeue
-- Avoids wasting array space
-- Enqueue: rear = (rear + 1) % size
-- Dequeue: front = (front + 1) % size
-- Empty: front == -1 (after complete drain)
-- Full: (rear + 1) % size == front
+```
+Rear wraps around to use space freed by dequeue
+Enqueue: rear = (rear + 1) % size
+Dequeue: front = (front + 1) % size
+Empty: front == -1 (after complete drain)
+Full: (rear + 1) % size == front
+```
 
 **Double Ended Queue (Deque)**
-- Insert and delete at both ends
+```
+Operations:
+- insertFront(x)    Add at front
+- insertRear(x)     Add at rear
+- deleteFront()     Remove from front
+- deleteRear()      Remove from rear
+- getfront()        Return front element
+- getRear()         Return rear element
+
+Types:
 - Input-restricted: insert one end, delete both
 - Output-restricted: insert both, delete one end
+```
 
 **Priority Queue**
-- Elements removed by priority, not by insertion order
-- Higher priority dequeued first
-- If same priority: FIFO order
+```
+Elements removed by priority, not by insertion order
+Higher priority dequeued first
+If same priority: FIFO order
+Implementation: heap or sorted list
+```
 
 **Applications**
 - CPU scheduling
@@ -730,7 +796,7 @@ isFull()       Check if full
 
 ---
 
-## SECTION 12: LINKED LISTS
+## SECTION 13: LINKED LISTS (UPDATED)
 
 ### Singly Linked List
 
@@ -742,20 +808,20 @@ struct Node {
 };
 ```
 
-**Operations**
+**Operations with Complexities**
 ```
-Create: Allocate node, initialize pointers
-Insert: Add at beginning (O(1)), middle (O(n)), end (O(n))
-Delete: Remove node from any position
-Traverse: Visit all nodes
-Search: Find element
-Display: Print all elements
+Search:              O(n)
+Insert at beginning: O(1)
+Insert at end:       O(1) with tail pointer, O(n) without
+Insert at middle:    O(n) to find + O(1) to insert
+Delete:              O(n) to find + O(1) to delete
+Traverse:            O(n)
 ```
 
 **Advantages**
 - Dynamic size
 - No waste of memory
-- Efficient insertion/deletion
+- Efficient insertion/deletion at known position
 
 **Disadvantages**
 - Extra memory for pointers
@@ -773,13 +839,18 @@ struct Node {
 };
 ```
 
+**Operations**
+```
+Same as singly linked list
+Delete: O(1) if pointer to node given (no need to find previous)
+```
+
 **Advantages**
 - Traverse forward and backward
-- Deletion easier (can skip searching previous node)
+- Deletion easier if node pointer given
 
 **Disadvantages**
 - Extra memory (2 pointers per node)
-- Insertion/deletion slightly complex
 
 ### Circular Linked List
 
@@ -787,69 +858,90 @@ struct Node {
 - Last node points to first node (not NULL)
 - No beginning or end
 - Useful for round-robin scheduling
-- Traverse back from any node to same node
-
-**Operations**
-```
-Similar to singly linked list
-But: traverse until you reach first node again
-     insertion/deletion: last node modified
-```
+- Can traverse back from any node
 
 ---
 
-## SECTION 13: TREES
+## SECTION 14: TREES
 
 ### Tree Basics
 
 **Definitions**
 ```
 Node: Element in tree
-Edge: Connection between nodes
+Edge: Connection between nodes (N nodes = N-1 edges)
 Root: Top node (no parent)
 Leaf: Node with no children
 Internal Node: Non-leaf node
-Path: Sequence of nodes and edges
-Height: Maximum nodes from root to leaf
-Depth: Distance from root to node
-Level: Nodes at same depth
+Path: Sequence of nodes and edges from one node to another
+Height: Maximum edges from root to leaf
+Depth: Number of edges from root to node
+Level: Nodes at same depth (root at level 0)
 Degree of Node: Number of children
 Degree of Tree: Maximum degree among all nodes
 ```
 
-**Properties**
+**Tree Properties**
 ```
-Nodes = Edges + 1  (N = E + 1)
-If node at level k, its children at level k+1
-If tree height h, max nodes = 2^h - 1
+N nodes → N-1 edges
+If node at level k → children at level k+1
+Max nodes at level k = 2^k (if binary tree)
+Max nodes in tree height h = 2^(h+1) - 1 (if h = edges)
 ```
 
 ### General Tree
 ```
-Tree where each node can have any number of children.
+Each node can have any number of children.
 Degree of node = number of children.
 Degree of tree = maximum degree among all nodes.
 ```
 
 ### Forest
 ```
-A forest is a collection of disjoint trees.
-If you remove root from tree, you get forest.
+Collection of disjoint trees.
+Remove root from tree → get forest.
 Forest with m nodes and n trees has (m - n) edges.
 ```
 
 ---
 
-## SECTION 14: BINARY TREES
+## SECTION 15: BINARY TREES
 
 ### Binary Tree Properties
 
 **Max/Min Nodes**
 ```
 Max nodes at level k = 2^k (0-indexed)
-Max nodes in tree height h = 2^h - 1
-Min height for n nodes = ceil(log₂(n+1))
-Max height for n nodes = n (skewed tree)
+Max nodes in tree height h = 2^(h+1) - 1 (when height = edges)
+Min height for n nodes = ceil(log₂(n+1)) - 1 (when height = edges)
+Max height for n nodes = n - 1 (skewed tree)
+Minimum nodes for height h = h + 1
+Maximum nodes for height h = 2^(h+1) - 1
+```
+
+### Binary Tree Node Relationships (CRITICAL FOR GATE)
+
+**Relationship between Internal Nodes (I) and Leaves (L)**
+
+```
+For any binary tree: L ≤ I + 1  (in general)
+```
+
+**For Full Binary Tree (every node has 0 or 2 children)**
+```
+L = I + 1
+N = 2I + 1 (N always odd)
+I = (N - 1) / 2
+L = (N + 1) / 2
+```
+
+**General Relationships with Height h (edges)**
+```
+For Internal Nodes:
+h ≤ I ≤ 2^h - 1
+
+For Leaves:
+1 ≤ L ≤ 2^h
 ```
 
 ### Types of Binary Trees
@@ -857,25 +949,25 @@ Max height for n nodes = n (skewed tree)
 **Full Binary Tree (FBT)**
 ```
 Every node has 0 or 2 children.
-If n internal nodes: n+1 leaf nodes.
-Total nodes = 2n + 1 (always odd).
-Height h: n = (2^h - 1).
+If I internal nodes: L = I + 1 leaves.
+Total nodes N = 2I + 1 (always odd).
+For height h: I = 2^h - 1.
 ```
 
 **Complete Binary Tree (CBT)**
 ```
 All levels full except possibly last.
 Last level filled left to right.
-Height of CBT with n nodes = floor(log₂n).
-Min nodes at height h = 2^(h-1).
-Max nodes at height h = 2^h - 1.
+Height of CBT with n nodes = floor(log₂ n).
 ```
 
 **Perfect Binary Tree**
 ```
 All internal nodes have 2 children.
 All leaves at same level.
-Total nodes = 2^h - 1.
+Total nodes = 2^(h+1) - 1.
+Every level is completely filled.
+Is also Full and Complete.
 ```
 
 **Balanced Binary Tree**
@@ -889,61 +981,96 @@ Examples: AVL, Red-Black trees.
 ```
 Every node has at most 1 child.
 Can be left-skewed or right-skewed.
-Height = n (worst case).
+Height = n - 1 (worst case).
 ```
 
 ### Binary Tree Traversals
 
 **Inorder (Left-Root-Right)**
 ```
-Process left subtree → root → right subtree
-BST inorder gives sorted order
-Stack-based
+Application: BST inorder gives sorted order
+Implementation: Stack-based (recursive or iterative)
+Example: 1 3 5 7 9
 ```
 
 **Preorder (Root-Left-Right)**
 ```
-Process root → left subtree → right subtree
-Used for copying tree
+Application: Serialization, copy tree
+Implementation: Stack-based
+Example: 5 3 1 7 9
 ```
 
 **Postorder (Left-Right-Root)**
 ```
-Process left → right subtree → root
-Used for deleting tree
+Application: Delete tree, expression evaluation
+Implementation: Stack-based (2-stack or flags)
+Example: 1 3 9 7 5
 ```
 
-**Level Order**
+**Level Order (BFS)**
 ```
-Visit by levels (BFS)
-Uses queue
+Application: Shortest path, layered structure
+Implementation: Queue-based
+Example: 5 3 7 1 9
+```
+
+### Tree Reconstruction from Traversals
+
+**Inorder + Preorder → Unique Tree**
+```
+1. First element of preorder = root
+2. Find root in inorder
+3. Elements left of root in inorder = left subtree
+4. Elements right of root in inorder = right subtree
+5. Recursively reconstruct left and right subtrees
+```
+
+**Inorder + Postorder → Unique Tree**
+```
+1. Last element of postorder = root
+2. Find root in inorder
+3. Elements left of root in inorder = left subtree
+4. Elements right of root in inorder = right subtree
+5. Recursively reconstruct
+```
+
+**Preorder + Postorder → NOT Unique (except Full Binary Tree)**
+```
+For full binary tree (every node has 0 or 2 children):
+Unique reconstruction possible.
+
+For general binary tree:
+Cannot uniquely reconstruct.
 ```
 
 ### Threaded Binary Tree
 
 **Definition**
 ```
-Binary tree where NULL pointers are replaced with thread pointers.
-Thread pointers point to predecessor (inorder) or successor nodes.
+Binary tree where NULL pointers replaced with thread pointers.
+Thread points to predecessor (inorder) or successor node.
 ```
 
 **Advantages**
-- Enables traversal without stack (non-recursive)
+- Traversal without stack (non-recursive)
 - Efficient space usage of NULL pointers
 - O(1) access to predecessor/successor
 
 **Types**
-- Single-threaded: Only successor threads
-- Double-threaded: Both predecessor and successor threads
+```
+Single-threaded: Only successor threads
+Double-threaded: Both predecessor and successor threads
+```
 
 ---
 
-## SECTION 15: BINARY SEARCH TREE (BST)
+## SECTION 16: BINARY SEARCH TREE (BST)
 
 ### BST Properties
 ```
 Left subtree: all values < node value
 Right subtree: all values > node value
+Inorder traversal gives sorted order
 ```
 
 ### BST Operations
@@ -951,107 +1078,56 @@ Right subtree: all values > node value
 Search:   O(log n) average, O(n) worst (skewed)
 Insert:   O(log n) average, O(n) worst
 Delete:   O(log n) average, O(n) worst
-Inorder:  Gives sorted order in O(n)
+Inorder:  O(n)
 ```
 
 ### Deletion Cases
 ```
-Node is leaf: Simply remove
-Node has 1 child: Replace with child
+Node is leaf:
+  Simply remove
+
+Node has 1 child:
+  Replace with child
+
 Node has 2 children: 
   - Find inorder successor (smallest in right subtree)
   - Replace node value with successor
   - Delete successor from right subtree
 ```
 
+### BST Predecessor & Successor
+
+**Successor (Next element in sorted order)**
+```
+If right subtree exists:
+  Leftmost node in right subtree
+
+If no right subtree:
+  First ancestor for which node is in left subtree
+```
+
+**Predecessor (Previous element in sorted order)**
+```
+If left subtree exists:
+  Rightmost node in left subtree
+
+If no left subtree:
+  First ancestor for which node is in right subtree
+```
+
 ### Handling Duplicates
 ```
-Convention in GATE:
-- Insert duplicates in LEFT subtree (left < node)
-- Or insert duplicates in RIGHT subtree (right ≥ node)
-Check problem statement for convention.
+Convention in GATE (check problem):
+Option 1: Insert duplicates in LEFT subtree (left < node)
+Option 2: Insert duplicates in RIGHT subtree (right ≥ node)
+Specify clearly in solution.
 ```
 
 ---
 
-## SECTION 16: BALANCED SEARCH TREES
+## SECTION 17: HASHING
 
-### AVL Trees (Self-Balancing BST)
-
-**Balance Factor**
-```
-BF(node) = height(left) - height(right)
-Valid BF: -1, 0, +1
-If |BF| > 1: tree is unbalanced, rebalance needed
-```
-
-**Rotations (after insertion/deletion)**
-```
-Left rotation:   Right child becomes new root
-Right rotation:  Left child becomes new root
-Left-Right:      Left rotation then right rotation
-Right-Left:      Right rotation then left rotation
-```
-
-**Properties**
-```
-Height = O(log n)
-Search/Insert/Delete = O(log n)
-More balanced than Red-Black trees
-More rotations during insertion/deletion
-```
-
-### Red-Black Trees
-
-**Properties**
-```
-1. Every node is red or black
-2. Root is black
-3. Leaves (NULL) are black
-4. If red, children are black
-5. Every path root→leaf has same # black nodes
-```
-
-**Height**
-```
-Height = O(log n)
-Max rotations during insert: 1
-More efficient insertion than AVL
-```
-
----
-
-## SECTION 17: B-TREES
-
-### B-Tree Properties
-```
-Order m: node can have m-1 keys and m children
-All leaves at same level
-Non-leaf non-root: min (m/2 - 1) keys, max (m-1) keys
-Root: min 1 key
-Leaf: 0 children, holds data
-```
-
-**Advantages**
-```
-Minimizes disk I/O (many keys per node)
-Self-balancing
-Height = O(log n)
-Widely used in databases and file systems
-```
-
-**Operations**
-```
-Search:   O(log n)
-Insert:   O(log n) with possible splits
-Delete:   O(log n) with possible merges
-```
-
----
-
-## SECTION 18: HASHING
-
-### Hash Function
+### Hash Function Basics
 
 **Purpose**
 ```
@@ -1083,57 +1159,48 @@ Avoids clustering
 h(k) = floor(m × (k×A mod 1))
 where 0 < A < 1 (typically A = (√5 - 1)/2 ≈ 0.618)
 m can be any value
+Good empirical performance
 ```
 
-**Mid-Square Method**
+**Other Methods**
 ```
-Square key, extract middle bits as hash
-h(k) = middle r bits of k²
-r = log₂(m)
-```
-
-**Folding Method**
-```
-Divide key into parts, add them
-h(k) = (part1 + part2 + ... + partn) mod m
-Good for long keys
+Mid-Square:   h(k) = middle r bits of k²
+Folding:      h(k) = sum of key parts mod m
+Extraction:   Select specific digits from key
 ```
 
-**Digit Extraction**
-```
-Select specific digits from key
-Useful for keys with patterns
-```
+### Perfect & Universal Hashing
 
-### Perfect Hash Function
+**Perfect Hash Function**
 ```
-Hash function that maps distinct keys to distinct hash values.
+Maps distinct keys to distinct hash values.
 No collisions.
 Requires exact knowledge of keys beforehand.
 ```
 
-### Universal Hashing
+**Universal Hashing**
 ```
-Family of hash functions where probability of collision ≤ 1/m.
+Family of hash functions where:
+Probability of collision between two distinct keys ≤ 1/m
 Provides good average-case performance against adversarial input.
 ```
 
 ### Collision Resolution
 
-**Open Addressing (Same Table)**
-
 **Linear Probing**
 ```
 If h(k) occupied, try h(k)+1, h(k)+2, ... (mod m)
 Probe sequence: h(k), h(k)+1, h(k)+2, ..., h(k)+i (mod m)
-Problem: Primary clustering (long sequences of filled slots)
+Problem: Primary clustering
 ```
 
 **Quadratic Probing**
 ```
 If h(k) occupied, try h(k)+1², h(k)+2², h(k)+3² (mod m)
 Probe sequence: h(k), h(k)+1, h(k)+4, h(k)+9, ... (mod m)
-Reduces clustering but requires m = prime power
+Reduces primary clustering
+Problem: Secondary clustering
+Requires m = prime power
 ```
 
 **Double Hashing**
@@ -1141,40 +1208,49 @@ Reduces clustering but requires m = prime power
 h(k, i) = (h1(k) + i×h2(k)) mod m
 Two hash functions: h1(k) and h2(k)
 h2(k) must be coprime with m
-Best performance, minimal clustering
+Best performance, no clustering
 ```
 
-**Chaining (Separate Table)**
+**Chaining**
 ```
 Each table position has linked list
 Collision: insert into list
 h(k) determines which list
+No clustering
 ```
 
-**Advantages/Disadvantages**
+### Clustering Comparison
 
-| Method | Advantages | Disadvantages |
-|--------|------------|---------------|
-| Linear Probing | Simple, cache-friendly | Primary clustering |
-| Quadratic Probing | Reduces clustering | Secondary clustering, prime size required |
-| Double Hashing | Best clustering behavior | Complex, slower |
-| Chaining | Simple, dynamic, easy delete | Extra memory, cache unfriendly |
+| Method | Primary Clustering | Secondary Clustering |
+|--------|-------------------|----------------------|
+| Linear Probing | Yes | No |
+| Quadratic Probing | No | Yes |
+| Double Hashing | No | No |
+| Chaining | No | No |
 
-### Load Factor
+### Load Factor & Performance
 
+**Load Factor**
 ```
-Load Factor α = n / m
+α = n / m
 where n = number of keys, m = table size
 ```
 
-**Performance**
+**Expected Probes (Uniform Hashing)**
+
+**Successful Search**
 ```
-Average unsuccessful search:
-- Linear Probing: 1/(1-α)
-- Chaining: 1 + α
-Average successful search:
-- Linear Probing: (1 + 1/(1-α)) / 2
-- Chaining: 1 + α/2
+Average = (1/α) × ln(1/(1-α))
+```
+
+**Unsuccessful Search**
+```
+Average = 1/(1-α)
+```
+
+**Insertion**
+```
+Same as unsuccessful search: 1/(1-α)
 ```
 
 **Rehashing**
@@ -1182,114 +1258,55 @@ Average successful search:
 When α exceeds threshold (typically 0.75):
 - Create new table (usually 2×m)
 - Rehash all existing elements
-- O(n) operation, but improves future operations
+- O(n) amortized operation
 ```
 
-### Hash Table Operations
+### Deletion with Open Addressing
 
+**Tombstones**
 ```
-Insert:   h(k) → check collision → insert
-Search:   h(k) → probe until found or empty slot
-Delete:   h(k) → probe until found → mark as deleted
-```
-
-### Advantages/Disadvantages
-
-**Advantages**
-```
-Average O(1) search, insert, delete
-Simple to implement
-No key comparisons needed
-```
-
-**Disadvantages**
-```
-Worst case O(n) (all collisions)
-Order not preserved
-Needs good hash function
-Not suitable for range queries
+Cannot simply empty slot after deletion.
+Mark deleted entries with tombstone marker.
+Tombstone treated as occupied during probing.
+Can be reclaimed when rehashing.
 ```
 
 ---
 
-## SECTION 19: STORAGE CLASSES & MEMORY LAYOUT
+## SECTION 18: MEMORY LAYOUT
 
-### Storage Classes
-
-**auto**
-```
-Default for local variables
-Automatic allocation/deallocation
-Scope: block (local)
-Lifetime: block duration
-```
-
-**extern**
-```
-Global scope across multiple files
-Declared but defined elsewhere
-Storage: static area
-Lifetime: entire program
-```
-
-**static**
-```
-Local static: retains value between function calls
-Global static: visible only in current file
-Initialized to 0
-Lifetime: entire program
-```
-
-**register**
-```
-Stored in CPU register (faster access)
-Hint to compiler (not guaranteed)
-Limited availability
-Suitable for frequently used variables
-```
-
-### Memory Layout (Program)
-
-**Typical Memory Organization**
 ```
 High Address ┌──────────────────┐
              │  Command Line    │
              │  & Environment  │
              ├──────────────────┤
-             │      Stack       │ ← Local variables
-             │       ↓          │    Function parameters
-             │       ...        │
+             │      Stack       │ ← Local variables, parameters
+             │       ↓          │    Function calls, return addresses
              ├──────────────────┤
-             │      Heap        │ ← malloc, calloc
-             │       ↑          │
-             │       ...        │
+             │      Heap        │ ← malloc, calloc (↑ growth)
+             │                  │
              ├──────────────────┤
-             │  Uninitialized   │ ← Global/static variables (0)
-             │  Data (BSS)      │
+             │ Uninitialized    │ ← Global/static (BSS)
+             │ Data (BSS)       │    Initialized to 0
              ├──────────────────┤
-             │ Initialized Data │ ← Global/static initialized
+             │ Initialized Data │ ← Global/static (initialized)
              ├──────────────────┤
-             │      Code        │ ← Program instructions
+             │      Code        │ ← Program instructions (read-only)
 Low Address  └──────────────────┘
 ```
 
-**Stack**
-- Local variables
-- Function parameters
-- Return addresses
-- LIFO structure
+---
 
-**Heap**
-- Dynamic memory allocation (malloc, calloc)
-- Grows upward
-- Managed manually (free)
+## SECTION 19: COMPLEXITY SUMMARY TABLE
 
-**Static/Global**
-- Global variables
-- Static variables
-- Initialized at program start
-
-**Code**
-- Program instructions
-- Read-only
+| Data Structure | Access | Search | Insert | Delete | Space | Avg/Best |
+|---|---|---|---|---|---|---|
+| Array | O(1) | O(n) | O(n) | O(n) | O(n) | O(n) avg |
+| Stack | O(n)* | O(n) | O(1) | O(1) | O(n) | O(1) amortized |
+| Queue | O(n)* | O(n) | O(1) | O(1) | O(n) | O(1) amortized |
+| Singly LL | O(n) | O(n) | O(1)** | O(1)** | O(n) | O(n) |
+| Doubly LL | O(n) | O(n) | O(1)** | O(1)** | O(n) | O(n) |
+| Binary Tree | O(n) | O(n) | O(n) | O(n) | O(n) | O(n) |
+| BST | O(log n) avg | O(log n) avg | O(log n) avg | O(log n) avg | O(n) | O(n) worst |
+| Hash Table | - | O(1) avg | O(1) avg | O(1) avg | O(n) | O(n) worst |
 

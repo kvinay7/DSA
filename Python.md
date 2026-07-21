@@ -47,7 +47,7 @@ int(str)                 # String to integer
 int(str, 16)             # Hex to decimal
 int(str, 2)              # Binary to decimal
 float(str)               # String to float
-bool(str)                # String to boolean
+bool(x)                  # Truthiness conversion (non-empty strings are True)
 
 str(n)                   # Integer to string
 bin(n)                   # Integer to binary (returns '0b...')
@@ -144,7 +144,7 @@ arr.pop()                        # Remove last, return it
 arr.pop(i)                       # Remove at index, return it
 arr.remove(x)                    # Remove first occurrence
 arr.clear()                      # Remove all
-arr.index(x)                     # First index of x (-1 if not found using arr.index(x) will raise ValueError)
+arr.index(x)                     # First index of x (raises ValueError if not found)
 
 arr.reverse()                    # In-place reverse
 arr.sort()                       # In-place sort
@@ -376,7 +376,7 @@ heap = []
 heapq.heappush(heap, x)          # Add (min-heap)
 heapq.heappop(heap)              # Remove min
 heap[0]                          # Peek min
-heapq.heapify(list)              # Convert list to heap (in-place)
+heapq.heapify(arr)               # Convert array to heap (in-place)
 
 # Max heap (negate values)
 heapq.heappush(heap, -x)
@@ -399,18 +399,5 @@ from collections import OrderedDict
 d = OrderedDict()
 d[key] = value
 # In Python 3.7+, regular dict maintains order
-```
-
-### Sorted Container (Advanced)
-```python
-from sortedcontainers import SortedList
-sl = SortedList()
-sl.add(x)
-sl.remove(x)
-sl.pop()
-sl.pop(0)                        # Remove first
-sl[0]                            # Min element
-sl[-1]                           # Max element
-len(sl)
 ```
 

@@ -157,10 +157,6 @@ arr[i:j]                         # Slice [i, j)
 arr[::-1]                        # Reverse (creates new list)
 x in arr                         # Check membership
 arr.count(x)                     # Count occurrences
-
-# Convert between list and array
-import array
-int_array = array.array('i', [1, 2, 3])  # 'i' = signed integer
 ```
 
 ### Common Operations
@@ -191,10 +187,6 @@ for x, y in zip(a, b):
 sorted(arr)
 sorted(arr, reverse=True)
 
-# reversed()
-for x in reversed(arr):
-    print(x)
-
 # List comprehension
 arr = [x*x for x in range(5)]
 
@@ -206,11 +198,6 @@ a = [1,2,3]
 b = a          # Alias
 c = a.copy()   # Copy
 d = a[:]       # Copy
-
-# Deep Copy
-import copy
-copy.copy(obj)        # Shallow copy
-copy.deepcopy(obj)    # Deep copy
 
 # Tuple
 t = (1, 2, 3) # Immutable
@@ -259,11 +246,6 @@ s = "abc"
 chars = list(s)
 chars[0] = 'x'
 s = ''.join(chars)  # "xbc"
-
-# Or use bytearray (mutable)
-b = bytearray(b"abc")
-b[0] = ord('x')
-s = b.decode()
 ```
 
 ---
@@ -392,22 +374,8 @@ heapq.heapify(arr)               # Convert array to heap (in-place)
 heapq.heappush(heap, -x)
 -heapq.heappop(heap)
 
-# Or use tuple (priority, value)
-heapq.heappush(heap, (priority, value))
-
 # k largest/smallest
 heapq.nlargest(k, list)
 heapq.nsmallest(k, list)
-
-heapq.heapreplace(heap, x)
-heapq.heappushpop(heap, x)
-```
-
-### OrderedDict (Maintains insertion order)
-```python
-from collections import OrderedDict
-d = OrderedDict()
-d[key] = value
-# In Python 3.7+, regular dict maintains order
 ```
 

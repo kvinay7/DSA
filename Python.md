@@ -206,6 +206,16 @@ a = [1,2,3]
 b = a          # Alias
 c = a.copy()   # Copy
 d = a[:]       # Copy
+
+# Deep Copy
+import copy
+copy.copy(obj)        # Shallow copy
+copy.deepcopy(obj)    # Deep copy
+
+# Tuple
+t = (1, 2, 3) # Immutable
+t[0]
+len(t)
 ```
 
 ---
@@ -314,7 +324,7 @@ d.values()                       # All values
 d.items()                        # All (key, value) pairs
 len(d)
 
-# Frequency counting (CRITICAL PATTERN)
+# Frequency counting
 from collections import Counter
 freq = Counter(arr)              # Count occurrences
 freq[x]                          # Get frequency

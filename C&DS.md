@@ -1,4 +1,4 @@
-# C & Data Structures — GATE CS/IT & DA
+<h1 align="center">Programming in C & Data Structures</h1>
 
 ## SECTION 1: BASICS & DATA TYPES
 
@@ -148,11 +148,6 @@ printf("%-8.2f", 98.7144);       // Left-justified, field width 8, 2 decimals
 - `putchar(ch)`: output single character
 - `puts(string)`: output string followed by newline
 - `printf()`: formatted output (already covered)
-
-**Command Line Arguments**
-- `argc`: integer count of command line arguments
-- `argv[]`: array of pointers to strings (char* argv[])
-- Example: `./program arg1 arg2` → argc=3, argv={"./program", "arg1", "arg2"}
 
 ---
 
@@ -458,6 +453,29 @@ Total Size = sizeof(datatype) × length
 int arr[3][4];  // 3 rows, 4 columns
 ```
 
+**Example**
+
+```c
+// Single dimension
+int arr[5] = {1, 2, 3, 4, 5};
+int arr2[] = {10, 20, 30};      // Size inferred: 3
+
+// Multi-dimensional (row-major storage)
+int matrix[3][4] = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+// Accessing elements
+printf("%d\n", arr[0]);         // 1
+printf("%d\n", matrix[1][2]);   // 7
+
+// Array name as pointer
+int *ptr = arr;                 // ptr points to arr[0]
+printf("%d\n", *(ptr + 1));     // Same as arr[1]
+```
+
 ---
 
 ### Row-Major & Column-Major Address Calculation
@@ -507,6 +525,19 @@ datatype *pointer_name;
 - `&` (address-of): Get address of variable
 - `*` (dereference): Access value at address
 
+**Example**
+
+```c
+int x = 10;
+int *ptr = &x;              // ptr holds address of x
+
+printf("%d\n", x);          // 10
+printf("%d\n", *ptr);       // 10 (dereference)
+printf("%p\n", &x);         // Address of x
+printf("%p\n", ptr);        // Same address
+printf("%lu\n", sizeof(ptr)); // 8 bytes (64-bit system)
+```
+
 ---
 
 ### Array of Pointers
@@ -517,8 +548,16 @@ datatype *array_name[size];
 
 **Example:**
 ```c
-int *p[5];      // Array of 5 pointers to int
-char *str[10];  // Array of 10 pointers to char
+int a = 10, b = 20, c = 30;
+int *ptrs[3] = {&a, &b, &c};   // Array of 3 pointers to int
+
+printf("%d\n", *ptrs[0]);       // 10
+printf("%d\n", *ptrs[1]);       // 20
+
+// Pointer to array (different)
+int arr[5] = {1, 2, 3, 4, 5};
+int (*ptr_arr)[5] = &arr;       // Pointer to array of 5 ints
+printf("%d\n", (*ptr_arr)[2]);  // 3
 ```
 
 ---
@@ -531,10 +570,20 @@ new_address = current_address ± (k × sizeof(datatype))
 
 **Examples:**
 ```c
-int *p = arr;  // p points to arr[0]
-p++;           // p now points to arr[1] (address increases by 4 bytes on 32-bit)
-p += 2;        // p now points to arr[3]
-p--;           // p now points to arr[2]
+int arr[5] = {10, 20, 30, 40, 50};
+int *p = arr;               // p points to arr[0]
+
+printf("%d\n", *p);         // 10
+printf("%d\n", *(p+1));     // 20 (arr[1])
+printf("%d\n", *(p+2));     // 30 (arr[2])
+
+p++;                        // p now points to arr[1]
+printf("%d\n", *p);         // 20
+
+p += 2;                     // p now points to arr[3]
+printf("%d\n", *p);         // 40
+
+printf("%ld\n", p - arr);   // Offset: 3 (elements, not bytes)
 ```
 
 ---
@@ -547,9 +596,21 @@ return_type (*ptr_name)(argument_types);
 
 **Example:**
 ```c
-int (*fp)(int, int);      // Pointer to function taking 2 ints, returning int
-fp = &add;                // Point to add function
-result = (*fp)(5, 10);    // Call via pointer
+// Define function
+int add(int x, int y) {
+    return x + y;
+}
+
+// Pointer to function
+int (*fp)(int, int);            // Declare function pointer
+fp = &add;                      // Or simply: fp = add;
+
+// Call via pointer
+int result = fp(5, 10);         // result = 15
+printf("%d\n", (*fp)(5, 10));   // Same, explicit dereference
+
+// Array of function pointers
+int (*funcs[3])(int, int) = {add, subtract, multiply};
 ```
 
 ---
@@ -559,6 +620,27 @@ result = (*fp)(5, 10);    // Call via pointer
 - Generic pointer; can point to any data type
 - Cannot be dereferenced directly; must be cast
 - Used for generic memory operations (malloc, memcpy, etc.)
+
+```c
+int x = 10;
+float y = 3.14;
+
+void *ptr = &x;             // Can point to any type
+ptr = &y;                   // No type mismatch error
+
+// Must cast before use
+int *iptr = (int *) ptr;
+float *fptr = (float *) ptr;
+```
+
+### Dangling Pointer
+
+```c
+int *p = (int*) malloc(sizeof(int));
+free(p);
+p = NULL;  // Good practice; avoid using p after free
+// *p is now a dangling pointer if p is not NULL'd
+```
 
 ---
 
@@ -577,32 +659,73 @@ char *str;            // Pointer to string
 - Limited only by available memory and array allocation
 - Arrays of strings: `char str[n][max_length]`
 
+```c
+// Character array (null-terminated)
+char str[20] = "Hello";     // "Hello\0" (6 chars + null)
+
+// Pointer to string (points to string literal)
+char *str2 = "World";       // String stored in read-only memory
+
+// Manual termination
+char str3[5] = {'H', 'i', '\0'};  // Must include \0
+
+printf("%s\n", str);        // Hello
+printf("%lu\n", strlen(str)); // 5 (excluding \0)
+```
+
 ---
 
 ### Standard String Functions (string.h)
 
-| Function | Prototype | Description |
-|----------|-----------|-------------|
-| **strlen** | `size_t strlen(const char *s)` | Return length of string |
-| **strcpy** | `char *strcpy(char *dest, const char *src)` | Copy string (unsafe) |
-| **strncpy** | `char *strncpy(char *dest, const char *src, int n)` | Copy n characters |
-| **strcmp** | `int strcmp(const char *s1, const char *s2)` | Compare strings |
-| **strcat** | `char *strcat(char *dest, const char *src)` | Concatenate strings |
-| **strncat** | `char *strncat(char *dest, const char *src, int n)` | Concatenate n characters |
-| **strchr** | `char *strchr(const char *s, int c)` | Find first occurrence of character |
-| **strstr** | `char *strstr(const char *s1, const char *s2)` | Find substring |
-| **strspn** | `size_t strspn(const char *s1, const char *s2)` | Length of prefix matching |
-| **strcspn** | `size_t strcspn(const char *s1, const char *s2)` | Length of prefix not matching |
+```c
+#include <string.h>
+
+char src[20] = "Hello";
+char dest[20];
+
+// strlen: get length
+printf("%lu\n", strlen(src));   // 5
+
+// strcpy: copy string (unsafe; no bounds check)
+strcpy(dest, src);              // dest = "Hello"
+
+// strncpy: copy n characters (safer)
+strncpy(dest, src, 3);          // dest = "Hel\0"
+
+// strcmp: compare strings (returns 0 if equal)
+if (strcmp(src, dest) == 0) {
+    printf("Strings are equal\n");
+}
+
+// strcat: concatenate (unsafe)
+strcat(src, dest);              // src = "HelloHello"
+
+// strncat: concatenate n characters (safer)
+strncat(src, dest, 3);          // src += "Hel"
+
+// strchr: find character
+char *pos = strchr(src, 'l');   // pos points to first 'l'
+
+// strstr: find substring
+char *sub = strstr(src, "lo");  // pos points to "lo"
+```
 
 ---
 
-### Character Conversion (stdlib.h)
+### Character Classification (ctype.h)
 
-| Function | Prototype | Description |
-|----------|-----------|-------------|
-| **atoi** | `int atoi(const char *s)` | String to integer |
-| **atof** | `float atof(const char *s)` | String to float |
-| **atol** | `long atol(const char *s)` | String to long integer |
+```c
+#include <ctype.h>
+
+isdigit('5');       // 1 (true)
+isalpha('a');       // 1 (true)
+isalnum('a1');      // 1 (true)
+isspace(' ');       // 1 (true)
+isupper('A');       // 1 (true)
+islower('a');       // 1 (true)
+toupper('a');       // 'A'
+tolower('A');       // 'a'
+```
 
 ---
 
@@ -619,65 +742,31 @@ char *str;            // Pointer to string
 
 **Example:**
 ```c
-int *arr = (int*) malloc(10 * sizeof(int));
-if (arr == NULL) { /* handle error */ }
-free(arr);
-arr = NULL;  // Best practice
+#include <stdlib.h>
+
+// Allocate memory for string
+char *str = (char*) malloc(50 * sizeof(char));
+if (str == NULL) {
+    printf("Memory allocation failed\n");
+    return;
+}
+
+strcpy(str, "Dynamic string");
+printf("%s\n", str);
+
+free(str);
+str = NULL;         // Good practice
+
+// Using calloc (zero-initialized)
+char *str2 = (char*) calloc(50, sizeof(char));
+// All bytes initialized to 0
+free(str2);
+str2 = NULL;
 ```
 
 ---
 
-## SECTION 11: FILE HANDLING
-
-### File I/O Functions (stdio.h)
-
-**File Operations**
-
-| Function | Prototype | Description |
-|----------|-----------|-------------|
-| **fopen** | `FILE *fopen(const char *filename, const char *mode)` | Open file |
-| **fclose** | `int fclose(FILE *fp)` | Close file |
-| **fread** | `size_t fread(void *ptr, size_t size, size_t nmemb, FILE *fp)` | Read from file |
-| **fwrite** | `size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *fp)` | Write to file |
-| **fprintf** | `int fprintf(FILE *fp, const char *format, ...)` | Formatted write to file |
-| **fscanf** | `int fscanf(FILE *fp, const char *format, ...)` | Formatted read from file |
-
-**File Modes**
-- `"r"`: Read (file must exist)
-- `"w"`: Write (creates/truncates file)
-- `"a"`: Append (creates if doesn't exist)
-- `"r+"`: Read + Write (file must exist)
-- `"w+"`: Read + Write (creates/truncates)
-- `"a+"`: Read + Append (creates if doesn't exist)
-
----
-
-### File Positioning
-
-| Function | Prototype | Description |
-|----------|-----------|-------------|
-| **fseek** | `int fseek(FILE *fp, long offset, int position)` | Seek to position |
-| **ftell** | `long ftell(FILE *fp)` | Get current position |
-| **rewind** | `void rewind(FILE *fp)` | Seek to beginning |
-
-**Seek Positions**
-- `SEEK_SET`: Beginning of file
-- `SEEK_CUR`: Current position
-- `SEEK_END`: End of file
-
----
-
-### Error Handling
-
-| Function | Purpose |
-|----------|---------|
-| **feof(FILE *fp)** | Check end-of-file |
-| **ferror(FILE *fp)** | Check for read/write error |
-| **clearerr(FILE *fp)** | Clear error flags |
-
----
-
-## SECTION 12: STRUCTURES & UNIONS
+## SECTION 11: STRUCTURES & UNIONS
 
 ### Structures
 
@@ -735,6 +824,24 @@ sizeof(Example) = 16 bytes (not 13)
 - Each member aligned to its size (char=1, int=4, double=8, etc.)
 - Structure size typically multiple of largest member size
 
+**Self-referential Structures**
+```c
+// Self-referential structure
+struct Node
+{
+    int data;
+    struct Node *next;  // Points to another Node
+};
+
+// For trees:
+struct TreeNode
+{
+    int data;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+```
+
 ---
 
 ### Unions
@@ -786,7 +893,7 @@ enum Days { MON, TUE, WED, THU, FRI };  // MON=0, TUE=1, etc.
 
 ---
 
-## SECTION 13: DATA STRUCTURES
+## SECTION 12: DATA STRUCTURES
 
 ### Stacks
 
@@ -909,51 +1016,7 @@ display()          // Print all elements
 
 ---
 
-### Hash Tables
-
-**Hash Table Basics**
-- Key-value pairs mapped via hash function
-- Fast average-case O(1) lookup
-- Handles collisions via probing or chaining
-
-**Hash Function**
-- Maps key to array index
-- Good hash function: uniform distribution, minimal collisions
-- Common methods: modulo, folding, mid-square
-
-**Collision Resolution Techniques**
-
-**1. Open Addressing (Probing)**
-- Linear Probing: `h(k, i) = (h(k) + i) mod m`
-  - Probe `h(k), h(k)+1, h(k)+2, ...`
-  - Problem: Clustering
-  
-- Quadratic Probing: `h(k, i) = (h(k) + i²) mod m`
-  - Reduces clustering
-  
-- Double Hashing: `h(k, i) = (h(k) + i × h2(k)) mod m`
-  - Uses secondary hash function
-  - Better distribution
-
-**2. Chaining**
-- Each bucket contains linked list of colliding elements
-- Separate chain for each hash value
-
-**Load Factor:** `α = n / m` (elements / table size)
-- Performance degrades as α increases
-- Typically rehash when α > 0.75
-
-**Time Complexity**
-
-| Operation | Average | Worst |
-|-----------|---------|-------|
-| Search | O(1) | O(n) |
-| Insert | O(1) | O(n) |
-| Delete | O(1) | O(n) |
-
----
-
-## SECTION 14: TREES & GRAPHS
+## SECTION 13: TREES
 
 ### Tree Basics
 
@@ -995,6 +1058,9 @@ display()          // Print all elements
 - All levels filled except possibly last
 - Last level filled left to right
 - Used in heap implementation
+- Parent of node i: (i-1)/2
+- Left child of i: 2*i + 1
+- Right child of i: 2*i + 2
 
 **3. Balanced Binary Tree**
 - Height difference ≤ 1 between subtrees
@@ -1024,46 +1090,7 @@ display()          // Print all elements
 
 ---
 
-### AVL Trees (Self-Balancing BST)
-
-**AVL Basics**
-- Self-balancing binary search tree
-- Balance factor: height(left) - height(right) ∈ {-1, 0, 1}
-- Automatically rebalances on insert/delete
-
-**Rotations**
-- Single Right Rotation
-- Single Left Rotation
-- Left-Right Rotation
-- Right-Left Rotation
-
-**Time Complexity**
-- Search, Insert, Delete: O(log n) guaranteed
-- Height: 1.44 × log₂(n) (more balanced than unbalanced BST)
-
----
-
-### Graph Basics
-
-**Graph Representation**
-- **Adjacency Matrix:** O(V²) space, O(1) edge lookup
-- **Adjacency List:** O(V+E) space, O(degree) edge lookup
-
-**Graph Traversal**
-- **BFS (Breadth-First Search):** O(V+E), uses queue
-- **DFS (Depth-First Search):** O(V+E), uses stack/recursion
-
-**Shortest Path Algorithms**
-- **Dijkstra:** O((V+E) log V) with min-heap, non-negative weights
-- **Bellman-Ford:** O(VE), handles negative weights
-
-**Minimum Spanning Tree**
-- **Kruskal:** O(E log E), edges sorted first
-- **Prim:** O((V+E) log V), vertex-based
-
----
-
-## SECTION 15: TIME & SPACE COMPLEXITY
+## SECTION 14: TIME & SPACE COMPLEXITY
 
 ### Data Structure Complexity Table
 
@@ -1074,27 +1101,9 @@ display()          // Print all elements
 | Queue | O(n) | O(n) | O(1) | O(1) | O(n) |
 | Singly LL | O(n) | O(n) | O(1)* | O(1)* | O(n) |
 | Doubly LL | O(n) | O(n) | O(1)* | O(1)* | O(n) |
-| Hash Table | N/A | O(1) avg, O(n) worst | O(1) avg, O(n) worst | O(1) avg, O(n) worst | O(n) |
 | Binary Tree | O(n) | O(n) | O(n) | O(n) | O(n) |
 | BST | O(logn) avg, O(n) worst | O(logn) avg, O(n) worst | O(logn) avg, O(n) worst | O(logn) avg, O(n) worst | O(n) |
-| AVL Tree | O(logn) | O(logn) | O(logn) | O(logn) | O(n) |
 
 **Note:** *O(1) for insertion/deletion at known position; O(n) if position must be found
 
----
-
-### Sorting Algorithm Complexity
-
-| Algorithm | Best | Average | Worst | Space | Stable |
-|---|---|---|---|---|---|
-| Bubble Sort | O(n) | O(n²) | O(n²) | O(1) | Yes |
-| Insertion Sort | O(n) | O(n²) | O(n²) | O(1) | Yes |
-| Selection Sort | O(n²) | O(n²) | O(n²) | O(1) | No |
-| Merge Sort | O(nlogn) | O(nlogn) | O(nlogn) | O(n) | Yes |
-| Quick Sort | O(nlogn) | O(nlogn) | O(n²) | O(logn) | No |
-| Heap Sort | O(nlogn) | O(nlogn) | O(nlogn) | O(1) | No |
-| Counting Sort | O(n+k) | O(n+k) | O(n+k) | O(k) | Yes |
-| Radix Sort | O(nk) | O(nk) | O(nk) | O(n+k) | Yes |
-
-**k:** Range of input (for counting/radix sort)
 

@@ -246,6 +246,8 @@ Collections.reverse(list);          // Reverse in-place
 Collections.swap(list, i, j);       // Swap elements
 ```
 
+---
+
 ### HashSet (Unordered, No Duplicates)
 ```
 Set<Integer> set = new HashSet<>();
@@ -278,6 +280,8 @@ set.last();                         // Get maximum
 set.lower(x);                       // Largest element < x
 set.higher(x);                      // Smallest element > x
 ```
+
+---
 
 ### HashMap (Key-Value Pairs)
 ```
@@ -322,6 +326,8 @@ map.lowerKey(key);                  // Largest key < given key
 map.higherKey(key);                 // Smallest key > given key
 ```
 
+---
+
 ### Stack (LIFO — Last In First Out)
 ```
 Stack<Integer> stack = new Stack<>();
@@ -332,6 +338,8 @@ stack.isEmpty();                    // Check if empty
 stack.size();                       // Size of stack
 stack.search(x);                    // Returns position from top (1-based)
 ```
+
+---
 
 ### Queue (FIFO — First In First Out)
 ```
@@ -360,6 +368,8 @@ deque.peekLast();                   // Peek rear
 deque.pollFirst();                  // Remove and return front
 deque.pollLast();                   // Remove and return rear
 ```
+
+---
 
 ### PriorityQueue (Min-Heap by Default)
 ```

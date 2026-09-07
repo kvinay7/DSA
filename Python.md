@@ -21,6 +21,7 @@ c.lower()
 # Numeric value from char
 ord(c) - ord('0')        # Convert '0'-'9' to 0-9
 ord(c)                   # Get ASCII value directly
+
 chr(65)                  # 'A' — convert ASCII to char
 ```
 
@@ -31,11 +32,15 @@ max(a, b)
 min(a, b)
 pow(base, exp)           # base^exp
 int(n ** 0.5)            # Square root (integer)
+
 import math
+
 math.sqrt(n)             # Float square root
 math.floor(x)            # Round down
 math.ceil(x)             # Round up
+
 round(x)                 # Round to nearest
+
 math.log(n)              # Natural logarithm
 math.log10(n)
 math.log(n, base)        # Log with base
@@ -379,3 +384,43 @@ heapq.nlargest(k, list)
 heapq.nsmallest(k, list)
 ```
 
+---
+
+## 6. Sorting
+```python
+# Sort list
+sorted([3, 1, 2])                    # [1, 2, 3]
+sorted([3, 1, 2], reverse=True)      # [3, 2, 1]
+
+# Sort by custom key
+sorted([(2, 'b'), (1, 'a')], key=lambda x: x[0])
+sorted(students, key=lambda s: (-s.gpa, s.name))  # GPA desc, name asc
+
+# Sort objects
+list.sort(key=lambda x: x.value)     # In-place
+```
+
+---
+
+## 7. Functional Programming
+```python
+# Lambda functions
+square = lambda x: x ** 2
+add = lambda a, b: a + b
+
+# Map
+result = list(map(lambda x: x * 2, [1, 2, 3]))  # [2, 4, 6]
+result = list(map(int, ['1', '2', '3']))        # [1, 2, 3]
+
+# Filter
+evens = list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4]))  # [2, 4]
+
+# Reduce (aggregate)
+from functools import reduce
+sum_result = reduce(lambda a, b: a + b, [1, 2, 3, 4])  # 10
+
+# List comprehension (preferred over map/filter)
+squares = [x**2 for x in range(5)]
+evens = [x for x in range(10) if x % 2 == 0]
+matrix = [[x for x in range(3)] for _ in range(3)]
+```

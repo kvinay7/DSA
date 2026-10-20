@@ -120,6 +120,7 @@ Use:
 
 Architecture:
 
+```
 EmployeeController
 ↓
 EmployeeService
@@ -127,6 +128,7 @@ EmployeeService
 EmployeeRepository
 ↓
 MySQL Database
+```
 
 ---
 

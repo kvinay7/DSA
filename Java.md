@@ -1,11 +1,11 @@
 <h1 align="center">Java Cheat Sheet</h1>
 
-## SECTION 0: [JAVA NOTES](https://github.com/kvinay7/interview-preparation/blob/main/Java.md)
+## SECTION 0: [JAVA NOTES](https://github.com/kvinay7/interview-preparation/blob/main/Java.md), [PYTHON NOTES](https://github.com/kvinay7/DSA/blob/main/Python.md)
 
 ## SECTION 1: NUMERICAL & CHARACTER METHODS
 
 ### Character Class
-```
+```java
 Character.isLetter(c)           // Is letter
 Character.isDigit(c)            // Is digit (0-9)
 Character.isLetterOrDigit(c)    // Is letter or digit
@@ -18,7 +18,7 @@ Character.getNumericValue(c)    // Convert '0'-'9' to 0-9
 ```
 
 ### Math Methods
-```
+```java
 Math.abs(n)                     // Absolute value
 Math.max(a, b)                  // Maximum
 Math.min(a, b)                  // Minimum
@@ -32,7 +32,7 @@ Math.log10(n)                   // Base 10 logarithm
 ```
 
 ### Type Conversions
-```
+```java
 Integer.parseInt(str)           // String to int
 Integer.parseInt(str, 16)       // Hex string to int
 Integer.parseInt(str, 2)        // Binary string to int
@@ -48,7 +48,7 @@ Integer.bitCount(n)             // Count 1s in binary
 ```
 
 ### Integer Limits
-```
+```java
 Integer.MAX_VALUE               // 2147483647
 Integer.MIN_VALUE               // -2147483648
 Long.MAX_VALUE                  // 9223372036854775807
@@ -63,7 +63,7 @@ Integer.numberOfTrailingZeros(n)    // Count trailing zeros
 ## SECTION 2: I/O & OPERATORS
 
 ### Fast I/O (MANDATORY for interviews)
-```
+```java
 import java.io.*;
 
 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -85,7 +85,7 @@ br.close();
 ```
 
 ### Bitwise Operators
-```
+```java
 a & b           // AND
 a | b           // OR
 a ^ b           // XOR
@@ -96,7 +96,7 @@ a >>> n         // Unsigned right shift
 ```
 
 ### Assignment Operators
-```
+```java
 a += b;         // Add and assign
 a -= b;         // Subtract and assign
 a *= b;         // Multiply and assign
@@ -110,7 +110,7 @@ a >>= n;        // Right shift and assign
 ```
 
 ### Short-Circuit Operators
-```
+```java
 (a > 0) && (b > 0)              // AND — stops if first is false
 (a > 0) || (b > 0)              // OR — stops if first is true
 !condition                      // NOT
@@ -121,7 +121,7 @@ a >>= n;        // Right shift and assign
 ## SECTION 3: ARRAYS & ARRAY METHODS
 
 ### Array Declaration & Initialization
-```
+```java
 int[] arr = new int[n];         // Initialize with zeros
 int[] arr = {1, 2, 3};          // Direct initialization
 Integer[] arr = new Integer[n]; // Object array (nullable)
@@ -129,7 +129,7 @@ int[][] matrix = new int[m][n]; // 2D array (m x n)
 ```
 
 ### Array Manipulation
-```
+```java
 System.arraycopy(src, srcPos, dest, destPos, length);    // Copy array
 Arrays.fill(arr, value);                                  // Fill entire array
 Arrays.fill(arr, start, end, value);                      // Fill range
@@ -147,7 +147,7 @@ List<Integer> list = new ArrayList<>(Arrays.asList(arr)); // Array to List
 ```
 
 ### Matrix Operations
-```
+```java
 matrix.length               // Number of rows
 matrix[0].length            // Number of columns
 
@@ -171,7 +171,7 @@ for(int i = 0; i < rows; i++) {
 ## SECTION 4: STRING & STRINGBUILDER
 
 ### String Methods
-```
+```java
 s.length()                          // Length of string
 s.charAt(i)                         // Character at index i
 s.substring(i)                      // From i to end
@@ -196,7 +196,7 @@ s.compareToIgnoreCase(other)        // Case-insensitive comparison
 ```
 
 ### StringBuilder Methods
-```
+```java
 StringBuilder sb = new StringBuilder(str);      // Initialize with String
 sb.append(char/int/string);                    // Append
 sb.insert(index, value);                       // Insert at position
@@ -210,7 +210,7 @@ sb.toString();                                 // Convert to String
 ```
 
 ### String vs StringBuilder (CRITICAL)
-```
+```java
 // Strings are IMMUTABLE — use StringBuilder for loops
 String s = "abc";
 s = s + "d";        // Creates new String object
@@ -226,7 +226,7 @@ String result = sb.toString();
 ## SECTION 5: COLLECTIONS FRAMEWORK
 
 ### ArrayList (Dynamic Array)
-```
+```java
 List<Integer> list = new ArrayList<>();
 list.add(x);                        // Add to end
 list.add(index, x);                 // Insert at position
@@ -246,8 +246,10 @@ Collections.reverse(list);          // Reverse in-place
 Collections.swap(list, i, j);       // Swap elements
 ```
 
+---
+
 ### HashSet (Unordered, No Duplicates)
-```
+```java
 Set<Integer> set = new HashSet<>();
 set.add(x);                         // Add
 set.remove(x);                      // Remove
@@ -263,13 +265,13 @@ set.removeAll(other);               // Difference
 ```
 
 ### LinkedHashSet (Preserves Insertion Order)
-```
+```java
 Set<Integer> set = new LinkedHashSet<>();
 // Same methods as HashSet, but maintains insertion order
 ```
 
 ### TreeSet (Sorted, No Duplicates)
-```
+```java
 Set<Integer> set = new TreeSet<>();
 // Sorted ascending by default
 Set<Integer> set = new TreeSet<>(Collections.reverseOrder());  // Descending
@@ -279,8 +281,10 @@ set.lower(x);                       // Largest element < x
 set.higher(x);                      // Smallest element > x
 ```
 
+---
+
 ### HashMap (Key-Value Pairs)
-```
+```java
 Map<Integer, Integer> map = new HashMap<>();
 map.put(key, value);                // Add key-value pair
 map.putIfAbsent(key, value);        // Only if key doesn't exist
@@ -307,13 +311,13 @@ map.put(x, map.getOrDefault(x, 0) + 1);
 ```
 
 ### LinkedHashMap (Preserves Insertion Order)
-```
+```java
 Map<Integer, Integer> map = new LinkedHashMap<>();
 // Same methods as HashMap, but maintains insertion order
 ```
 
 ### TreeMap (Sorted by Key)
-```
+```java
 Map<Integer, Integer> map = new TreeMap<>();
 // Keys are sorted in ascending order
 map.firstKey();                     // Get minimum key
@@ -322,8 +326,10 @@ map.lowerKey(key);                  // Largest key < given key
 map.higherKey(key);                 // Smallest key > given key
 ```
 
+---
+
 ### Stack (LIFO — Last In First Out)
-```
+```java
 Stack<Integer> stack = new Stack<>();
 stack.push(x);                      // Add to top
 stack.pop();                        // Remove and return top
@@ -333,8 +339,10 @@ stack.size();                       // Size of stack
 stack.search(x);                    // Returns position from top (1-based)
 ```
 
+---
+
 ### Queue (FIFO — First In First Out)
-```
+```java
 Queue<Integer> q = new LinkedList<>();
 q.offer(x);                         // Add to rear (returns boolean)
 q.add(x);                           // Add to rear (throws exception if full)
@@ -347,7 +355,7 @@ q.size();                           // Size of queue
 ```
 
 ### Deque (Double-Ended Queue)
-```
+```java
 Deque<Integer> deque = new LinkedList<>();
 deque.addFirst(x);                  // Add to front
 deque.addLast(x);                   // Add to rear
@@ -361,8 +369,10 @@ deque.pollFirst();                  // Remove and return front
 deque.pollLast();                   // Remove and return rear
 ```
 
+---
+
 ### PriorityQueue (Min-Heap by Default)
-```
+```java
 PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 minHeap.offer(x);                   // Add element
 minHeap.poll();                     // Remove and return minimum
@@ -387,7 +397,7 @@ PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> {
 ## SECTION 6: COMPARATOR & SORTING
 
 ### Custom Comparator
-```
+```java
 // For Arrays
 Arrays.sort(arr, (a, b) -> Integer.compare(a.value, b.value));  // Ascending
 Arrays.sort(arr, (a, b) -> Integer.compare(b.value, a.value));  // Descending
@@ -408,7 +418,7 @@ Arrays.sort(strs, Collections.reverseOrder());  // Descending
 ```
 
 ### Comparable vs Comparator
-```
+```java
 // Comparable (implement in class)
 class Pair implements Comparable<Pair> {
     public int compareTo(Pair other) {
@@ -429,3 +439,83 @@ Collections.sort(list, new PairComparator());
 Collections.sort(list, (a, b) -> a.value - b.value);
 ```
 
+---
+
+## SECTION 7: STREAMS & OPTIONAL
+
+```java
+// Stream Declaration
+Stream<Integer> stream = Arrays.stream(arr);
+Stream<Integer> stream = list.stream();
+Stream<Integer> stream = Stream.of(1, 2, 3);
+
+// Intermediate Operations (Lazy - not executed until terminal op)
+stream.filter(x -> x > 5)              // Keep only x > 5
+stream.map(x -> x * 2)                 // Transform each element
+stream.sorted()                        // Sort ascending
+stream.sorted((a, b) -> b - a)         // Custom sort (descending)
+stream.distinct()                      // Remove duplicates
+stream.limit(n)                        // Keep first n elements
+stream.skip(n)                         // Skip first n elements
+stream.flatMap(x -> Stream.of(x))      // Flatten nested streams
+stream.peek(x -> System.out.println(x)) // Debug without changing
+
+// Terminal Operations (Executes stream, can't reuse after)
+stream.forEach(x -> System.out.println(x))  // Print each
+stream.collect(Collectors.toList())         // Convert to List
+stream.collect(Collectors.toSet())          // Convert to Set
+stream.collect(Collectors.toMap(k, v))      // Convert to Map
+stream.collect(Collectors.groupingBy(k))    // Group by key
+stream.reduce((a, b) -> a + b)              // Aggregate (sum, product, etc)
+stream.reduce(0, Integer::sum)              // Reduce with initial value
+stream.count()                              // Count elements
+stream.min(Comparator.naturalOrder())       // Find minimum
+stream.max(Comparator.naturalOrder())       // Find maximum
+
+// Short-circuit Operations (Early termination)
+stream.anyMatch(x -> x > 5)            // Is any > 5? (returns boolean)
+stream.allMatch(x -> x > 0)            // Are all > 0? (returns boolean)
+stream.noneMatch(x -> x < 0)           // Are none < 0? (returns boolean)
+stream.findFirst()                     // Get first as Optional<T>
+stream.findAny()                       // Get any as Optional<T>
+
+// CRITICAL PATTERN: Frequency Counting with Streams
+list.stream()
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+    .entrySet()
+    .forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+
+// CRITICAL PATTERN: Top K Elements
+list.stream()
+    .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+    .limit(k)
+    .collect(Collectors.toList());
+```
+
+```java
+// Creating Optional
+Optional<Integer> opt = Optional.of(5);        // Non-null value
+Optional<Integer> opt = Optional.ofNullable(x); // Could be null
+Optional<Integer> opt = Optional.empty();       // Empty optional
+
+// Checking & Accessing
+opt.isPresent()                        // Is value present?
+opt.isEmpty()                          // Is empty?
+opt.get()                              // Get value (throws if empty)
+opt.orElse(defaultValue)               // Get value or default
+opt.orElseGet(() -> computeDefault()) // Get value or compute
+opt.orElseThrow()                      // Get value or throw exception
+
+// Transforming Optional
+opt.filter(x -> x > 0)                 // Filter if condition met
+opt.map(x -> x * 2)                    // Transform value
+opt.flatMap(x -> Optional.of(x * 2))   // Flatten nested optionals
+opt.ifPresent(x -> System.out.println(x))  // Do if present
+opt.ifPresentOrElse(
+    x -> System.out.println(x),
+    () -> System.out.println("empty")
+)
+
+// CRITICAL PATTERN: Safe HashMap lookup
+int value = map.get(key).orElse(0);  // Safe, won't throw NPE
+```

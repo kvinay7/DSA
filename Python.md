@@ -21,6 +21,7 @@ c.lower()
 # Numeric value from char
 ord(c) - ord('0')        # Convert '0'-'9' to 0-9
 ord(c)                   # Get ASCII value directly
+
 chr(65)                  # 'A' — convert ASCII to char
 ```
 
@@ -31,11 +32,15 @@ max(a, b)
 min(a, b)
 pow(base, exp)           # base^exp
 int(n ** 0.5)            # Square root (integer)
+
 import math
+
 math.sqrt(n)             # Float square root
 math.floor(x)            # Round down
 math.ceil(x)             # Round up
+
 round(x)                 # Round to nearest
+
 math.log(n)              # Natural logarithm
 math.log10(n)
 math.log(n, base)        # Log with base
@@ -47,7 +52,7 @@ int(str)                 # String to integer
 int(str, 16)             # Hex to decimal
 int(str, 2)              # Binary to decimal
 float(str)               # String to float
-bool(str)                # String to boolean
+bool(x)                  # Truthiness conversion (non-empty strings are True)
 
 str(n)                   # Integer to string
 bin(n)                   # Integer to binary (returns '0b...')
@@ -144,7 +149,7 @@ arr.pop()                        # Remove last, return it
 arr.pop(i)                       # Remove at index, return it
 arr.remove(x)                    # Remove first occurrence
 arr.clear()                      # Remove all
-arr.index(x)                     # First index of x (-1 if not found using arr.index(x) will raise ValueError)
+arr.index(x)                     # First index of x (raises ValueError if not found)
 
 arr.reverse()                    # In-place reverse
 arr.sort()                       # In-place sort
@@ -157,10 +162,6 @@ arr[i:j]                         # Slice [i, j)
 arr[::-1]                        # Reverse (creates new list)
 x in arr                         # Check membership
 arr.count(x)                     # Count occurrences
-
-# Convert between list and array
-import array
-int_array = array.array('i', [1, 2, 3])  # 'i' = signed integer
 ```
 
 ### Common Operations
@@ -175,6 +176,38 @@ any(arr)                         # Any truthy?
 new_arr = arr.copy()
 new_arr = arr[:]
 new_arr = list(arr)
+
+# enumerate()
+arr = [10, 20, 30]
+for i, x in enumerate(arr):
+    print(i, x)
+
+# zip()
+a = [1, 2]
+b = [3, 4]
+for x, y in zip(a, b):
+    print(x, y)
+
+# sorted() - returns new list
+sorted(arr)
+sorted(arr, reverse=True)
+
+# List comprehension
+arr = [x*x for x in range(5)]
+
+# Nested comprehension
+matrix = [[0 for _ in range(m)] for _ in range(n)]
+
+# Copy vs Alias
+a = [1,2,3]
+b = a          # Alias
+c = a.copy()   # Copy
+d = a[:]       # Copy
+
+# Tuple
+t = (1, 2, 3) # Immutable
+t[0]
+len(t)
 ```
 
 ---
@@ -218,11 +251,6 @@ s = "abc"
 chars = list(s)
 chars[0] = 'x'
 s = ''.join(chars)  # "xbc"
-
-# Or use bytearray (mutable)
-b = bytearray(b"abc")
-b[0] = ord('x')
-s = b.decode()
 ```
 
 ---
@@ -283,11 +311,13 @@ d.values()                       # All values
 d.items()                        # All (key, value) pairs
 len(d)
 
-# Frequency counting (CRITICAL PATTERN)
+# Frequency counting
 from collections import Counter
 freq = Counter(arr)              # Count occurrences
 freq[x]                          # Get frequency
+freq.most_common()
 freq.most_common(k)              # Top k elements
+list(freq.elements())
 ```
 
 ### DefaultDict (Auto-initialize)
@@ -330,6 +360,10 @@ d.popleft()                      # Remove from left
 d[0]                             # Peek left
 d[-1]                            # Peek right
 d.rotate(k)                      # Rotate right by k
+d.extend(iterable)
+d.extendleft(iterable)
+d.rotate(k)
+d.rotate(-k)
 ```
 
 ### Heap (Priority Queue)
@@ -339,38 +373,54 @@ heap = []
 heapq.heappush(heap, x)          # Add (min-heap)
 heapq.heappop(heap)              # Remove min
 heap[0]                          # Peek min
-heapq.heapify(list)              # Convert list to heap (in-place)
+heapq.heapify(arr)               # Convert array to heap (in-place)
 
 # Max heap (negate values)
 heapq.heappush(heap, -x)
 -heapq.heappop(heap)
-
-# Or use tuple (priority, value)
-heapq.heappush(heap, (priority, value))
 
 # k largest/smallest
 heapq.nlargest(k, list)
 heapq.nsmallest(k, list)
 ```
 
-### OrderedDict (Maintains insertion order)
+---
+
+## 6. Sorting
 ```python
-from collections import OrderedDict
-d = OrderedDict()
-d[key] = value
-# In Python 3.7+, regular dict maintains order
+# Sort list
+sorted([3, 1, 2])                    # [1, 2, 3]
+sorted([3, 1, 2], reverse=True)      # [3, 2, 1]
+
+# Sort by custom key
+sorted([(2, 'b'), (1, 'a')], key=lambda x: x[0])
+sorted(students, key=lambda s: (-s.gpa, s.name))  # GPA desc, name asc
+
+# Sort objects
+list.sort(key=lambda x: x.value)     # In-place
 ```
 
-### Sorted Container (Advanced)
-```python
-from sortedcontainers import SortedList
-sl = SortedList()
-sl.add(x)
-sl.remove(x)
-sl.pop()
-sl.pop(0)                        # Remove first
-sl[0]                            # Min element
-sl[-1]                           # Max element
-len(sl)
-```
+---
 
+## 7. Functional Programming
+```python
+# Lambda functions
+square = lambda x: x ** 2
+add = lambda a, b: a + b
+
+# Map
+result = list(map(lambda x: x * 2, [1, 2, 3]))  # [2, 4, 6]
+result = list(map(int, ['1', '2', '3']))        # [1, 2, 3]
+
+# Filter
+evens = list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4]))  # [2, 4]
+
+# Reduce (aggregate)
+from functools import reduce
+sum_result = reduce(lambda a, b: a + b, [1, 2, 3, 4])  # 10
+
+# List comprehension (preferred over map/filter)
+squares = [x**2 for x in range(5)]
+evens = [x for x in range(10) if x % 2 == 0]
+matrix = [[x for x in range(3)] for _ in range(3)]
+```
